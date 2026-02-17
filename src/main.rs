@@ -1,15 +1,15 @@
 fn main() {
-    let mut name = String::from("Mehdi");
-    let lecture = &name;
-    println!("Lecture :{}", lecture);
-    add_title(&mut name);
-    let namebis = name.clone();
-    println!("Name: {}", &name);
-    println!("NameBis: {}", namebis);
-}
+    let p = Personne::new(String::from("Mehdi"), 30);
 
-fn add_title(name: &mut String) {
-    name.push_str(" (Mr.)");
+    match p {
+        Some(mut p_interne) => {
+            let nom_alias = p_interne.get_username();
+            println!("{}", nom_alias);
+            p_interne.feter_anniversaire();
+            println!("Age de la personne interne : {}", p_interne.age);
+        }
+        None => println!("La personne interne n'existe pas"),
+    };
 }
 
 struct Personne {
@@ -18,8 +18,12 @@ struct Personne {
 }
 
 impl Personne {
-    pub fn new(username: String, age: u32) -> Self {
-        Self { username, age }
+    pub fn new(username: String, age: u32) -> Option<Self> {
+        if age < 120 {
+            Some(Self { username, age })
+        } else {
+            None
+        }
     }
 
     pub fn get_username(&self) -> &String {
