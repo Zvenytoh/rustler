@@ -1,17 +1,6 @@
-use std::io::{self, Read};
-
 fn main() {
-    
     let mut ma_liste: Vec<Tache> = Vec::new();
-    
-    let t1 = Tache::new(String::from("Faire le premier défi"));
-    ma_liste.push(t1);
-    
-    let t2 = Tache::new(String::from("Deuxième tache"));
-    ma_liste.push(t2);
-    
-    println!("{:?}", ma_liste);
-    
+
     loop {
         println!("Entrez une tâche (ou 'exit' pour quitter) :");
         let mut saisie = String::new();
@@ -19,9 +8,25 @@ fn main() {
         let nom_propre = saisie.trim();
         if nom_propre == "exit" {
             break;
+        } else if nom_propre == "fait" {
+            if !ma_liste.is_empty() {
+                let i = ma_liste.len() - 1;
+                ma_liste[i].statut = Statut::Termine;
+            } else {
+                println!("\n Ajoutez une tâche pour pouvoir exécuter cette action\n\n ")
+            }
+        } else {
+            let nouvelle_tache = Tache::new(String::from(nom_propre));
+            ma_liste.push(nouvelle_tache);
+            let i = ma_liste.len() - 1;
+            ma_liste[i].statut = Statut::EnCours;
         }
-        let nouvelle_tache = Tache::new(String::from(nom_propre));
-        ma_liste.push(nouvelle_tache);
+    }
+    for tache in &ma_liste {
+        println!(
+            "Statut: {:?} | Description: {}",
+            tache.statut, tache.description
+        );
     }
 }
 
